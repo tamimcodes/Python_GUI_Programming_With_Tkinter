@@ -24,6 +24,8 @@ Python (3.12)
 
 Tkinter (standard Python GUI library)
 
+PostgreSQL (database)
+
 
 **This repo is a personal journey through the book, practicing each concept and building progressively complex Tkinter applications.**
 
