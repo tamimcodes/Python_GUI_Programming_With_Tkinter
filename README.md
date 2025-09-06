@@ -4,6 +4,9 @@ This repository contains my practice code and projects from the book Python GUI 
 
 The book follows a project-based learning approach — starting from simple Tkinter syntax and gradually introducing more advanced concepts for building cross-platform GUI applications.
 
+![data_entry_app](https://github.com/tamimcodes/Python_GUI_Programming_With_Tkinter/blob/main/picture.png)
+
+
 📚 **Topics Covered**
 
 ✅ Getting started with Tkinter basics
