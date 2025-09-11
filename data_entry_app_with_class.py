@@ -150,62 +150,66 @@ class DataRecordForm(tk.Frame):
         environmentinfo.grid(row=1, column=0, sticky=(tk.W + tk.E))
 
         # Plant Data section
-        plantinfo = tk.LabelFrame(self,text="Plant Data")
+        plantinfo = tk.LabelFrame(self, text="Plant Data")
         self.inputs["Plants"] = LabelInput(
-            plantinfo,"Plants",
+            plantinfo,
+            "Plants",
             input_class=tk.Spinbox,
             input_var=tk.IntVar(),
-            input_args={"from_":0,"to":20}
+            input_args={"from_": 0, "to": 20},
         )
-        self.inputs['Plants'].grid(row=0, column=0)
+        self.inputs["Plants"].grid(row=0, column=0)
 
-        self.inputs['Blossoms']=LabelInput(
-            plantinfo,"Blossoms",
+        self.inputs["Blossoms"] = LabelInput(
+            plantinfo,
+            "Blossoms",
             input_class=tk.Spinbox,
             input_var=tk.IntVar(),
-            input_args={"from_":0,"to":1000}
+            input_args={"from_": 0, "to": 1000},
         )
-        self.inputs['Blossoms'].grid(row=0, column=1)
-        self.inputs['Fruit'] = LabelInput(
-            plantinfo, "Fruit",
+        self.inputs["Blossoms"].grid(row=0, column=1)
+        self.inputs["Fruit"] = LabelInput(
+            plantinfo,
+            "Fruit",
             input_class=tk.Spinbox,
             input_var=tk.IntVar(),
-            input_args={"from_": 0, "to": 1000}
+            input_args={"from_": 0, "to": 1000},
         )
-        self.inputs['Fruit'].grid(row=0, column=2)
+        self.inputs["Fruit"].grid(row=0, column=2)
 
         # Height data
-        self.inputs['Min Height'] = LabelInput(
-            plantinfo, "Min Height (cm)",
+        self.inputs["Min Height"] = LabelInput(
+            plantinfo,
+            "Min Height (cm)",
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
-            input_args={"from_": 0, "to": 1000, "increment": .01}
+            input_args={"from_": 0, "to": 1000, "increment": 0.01},
         )
-        self.inputs['Min Height'].grid(row=1, column=0)
-        self.inputs['Max Height'] = LabelInput(
-            plantinfo, "Max Height (cm)",
+        self.inputs["Min Height"].grid(row=1, column=0)
+        self.inputs["Max Height"] = LabelInput(
+            plantinfo,
+            "Max Height (cm)",
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
-            input_args={"from_": 0, "to": 1000, "increment": .01}
+            input_args={"from_": 0, "to": 1000, "increment": 0.01},
         )
-        self.inputs['Max Height'].grid(row=1, column=1)
-        self.inputs['Median Height'] = LabelInput(
-            plantinfo, "Median Height (cm)",
+        self.inputs["Max Height"].grid(row=1, column=1)
+        self.inputs["Median Height"] = LabelInput(
+            plantinfo,
+            "Median Height (cm)",
             input_class=tk.Spinbox,
             input_var=tk.DoubleVar(),
-            input_args={"from_": 0, "to": 1000, "increment": .01}
+            input_args={"from_": 0, "to": 1000, "increment": 0.01},
         )
-        self.inputs['Median Height'].grid(row=1, column=2)
+        self.inputs["Median Height"].grid(row=1, column=2)
 
         plantinfo.grid(row=2, column=0, sticky=(tk.W + tk.E))
-        
+
         # Notes section
-        self.inputs['Notes'] = LabelInput(
-            self,"Notes",
-            input_class=tk.Text,
-            input_args={'width':75,'height':10}
+        self.inputs["Notes"] = LabelInput(
+            self, "Notes", input_class=tk.Text, input_args={"width": 75, "height": 10}
         )
-        self.inputs['Notes'].grid(sticky=tk.W,row=3,column=0)
+        self.inputs["Notes"].grid(sticky=tk.W, row=3, column=0)
 
         # default the form
         self.reset()
@@ -216,54 +220,50 @@ class DataRecordForm(tk.Frame):
         # We need to retrieve the data from Tkinter variables
         # and place it in regular Python objects
         data = {}
-        for key,widget in self.inputs.items():
+        for key, widget in self.inputs.items():
             data[key] = widget.get()
         return data
 
     def reset(self):
         for widget in self.inputs.values():
-            widget.set('')
-
+            widget.set("")
 
 
 class Application(tk.Tk):
     """Application root window"""
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
+        super().__init__(*args, **kwargs)
         self.title("ABQ Data Entry Application")
         self.resizable(width=False, height=False)
         ttk.Label(
-            self,
-            text = "ABQ Data Entry Application",
-            font=("TkDefaultFont", 16)
+            self, text="ABQ Data Entry Application", font=("TkDefaultFont", 16)
         ).grid(row=0)
         self.recordform = DataRecordForm(self)
-        self.recordform.grid(row=1,padx=10)
-        self.savebutton = ttk.Button(self,text = "Save",command=self.on_save)
-        self.savebutton.grid(row=2,padx=10,sticky=tk.E)
+        self.recordform.grid(row=1, padx=10)
+        self.savebutton = ttk.Button(self, text="Save", command=self.on_save)
+        self.savebutton.grid(row=2, padx=10, sticky=tk.E)
         # status bar
         self.status = tk.StringVar()
-        self.statusbar = ttk.Label(self,textvariable=self.status)
-        self.statusbar.grid(row=3,padx=10,sticky=(tk.W + tk.E))
+        self.statusbar = ttk.Label(self, textvariable=self.status)
+        self.statusbar.grid(row=3, padx=10, sticky=(tk.W + tk.E))
         self.records_saved = 0
-
 
     def on_save(self):
         datestring = datetime.today().strftime("%Y-%m-%d")
         filename = "abq_data_record_{}.csv".format(datestring)
         newfile = not os.path.exists(filename)
         data = self.recordform.get()
-        with open(filename,"a") as fh:
-            csvwriter = csv.DictWriter(fh,fieldnames= data.keys())
+        with open(filename, "a") as fh:
+            csvwriter = csv.DictWriter(fh, fieldnames=data.keys())
             if newfile:
                 csvwriter.writeheader()
             csvwriter.writerow(data)
 
         self.records_saved += 1
-        self.status.set(
-            "{} records saved this session".format(self.records_saved)
-        )
+        self.status.set("{} records saved this session".format(self.records_saved))
         self.recordform.reset()
+
 
 if __name__ == "__main__":
     app = Application()
